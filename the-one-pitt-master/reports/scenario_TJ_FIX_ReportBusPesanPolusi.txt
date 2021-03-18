@@ -1,10 +1,10 @@
 Pesan M
-nrofCreated = 0
+nrofCreated = 76
 nrofDropped = 0
 nrofRemoved = 0
-nrofStarted = 0
+nrofStarted = 844
 nrofAborted = 0
-nrofRelayed = 0
+nrofRelayed = 844
 ndelivered = 0
 deliveryProb = 0.0000
 OverheadRatio = NaN

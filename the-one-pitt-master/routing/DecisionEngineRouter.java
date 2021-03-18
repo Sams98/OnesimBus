@@ -88,12 +88,13 @@ public class DecisionEngineRouter extends ActiveRouter
 	public static final String CONNECTION_STATE_SETTING = "";
 	
 	protected boolean tombstoning;
-	protected RoutingDecisionEngine decider;
+	protected RoutingDecisionEngineWithCalc decider;
 	protected List<Tuple<Message, Connection>> outgoingMessages;
 	
 	protected Set<String> tombstones;
 	
         protected int  DENIED_DELIVERED;
+        
 	/** 
 	 * Used to save state machine when new connections are made. See comment in
 	 * changedConnection() 
@@ -108,7 +109,7 @@ public class DecisionEngineRouter extends ActiveRouter
 		
 		outgoingMessages = new LinkedList<Tuple<Message, Connection>>();
 		
-		decider = (RoutingDecisionEngine)routeSettings.createIntializedObject(
+		decider = (RoutingDecisionEngineWithCalc)routeSettings.createIntializedObject(
 				"routing." + routeSettings.getSetting(ENGINE_SETTING));
 		
 		if(routeSettings.contains(TOMBSTONE_SETTING))
@@ -119,6 +120,8 @@ public class DecisionEngineRouter extends ActiveRouter
 		if(tombstoning)
 			tombstones = new HashSet<String>(10);
 		conStates = new HashMap<Connection, Integer>(4);
+                decider.hitungJarakEuclidan(getHost());
+                
 	}
 
 	public DecisionEngineRouter(DecisionEngineRouter r)
@@ -396,7 +399,7 @@ public class DecisionEngineRouter extends ActiveRouter
 		}
 	}
 
-	public RoutingDecisionEngine getDecisionEngine()
+	public RoutingDecisionEngineWithCalc getDecisionEngine()
 	{
 		return this.decider;
 	}

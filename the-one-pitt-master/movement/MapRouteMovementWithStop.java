@@ -11,8 +11,10 @@ import movement.map.DijkstraPathFinder;
 import movement.map.MapNode;
 import movement.map.MapRoute;
 import core.Coord;
+import core.DTNHost;
 import core.Settings;
 import core.SimError;
+import core.SimScenario;
 import java.util.ArrayList;
 import gui.playfield.NodeGraphic;
 import java.awt.AWTEventMulticaster;
@@ -84,6 +86,10 @@ public class MapRouteMovementWithStop extends MapBasedMovement implements
     private List<MapNode> stopPath;
     private double minStopTime;
     private double maxStopTime;
+    
+
+    //Coba
+    public static final String GROUP_ID = "grupID";
 
     /**
      * Creates a new movement model based on a Settings object's settings.
@@ -127,6 +133,7 @@ public class MapRouteMovementWithStop extends MapBasedMovement implements
         }
         minStopTime = times[0];
         maxStopTime = times[1];
+//        System.out.println(fileName);
     }
 
     /**
@@ -165,6 +172,8 @@ public class MapRouteMovementWithStop extends MapBasedMovement implements
     public Path getPath() {
         Path p = new Path(generateSpeed());
         MapNode to = route.nextStop();
+        double dis = this.route.nextStop().getLocation().distance(new Coord(9647, 1620));
+
         for (MapNode stopPath1 : stopPath) {
             if (to.getLocation().equals(stopPath1.getLocation())) {
                 minWaitTime = minStopTime;
@@ -186,6 +195,8 @@ public class MapRouteMovementWithStop extends MapBasedMovement implements
         }
 
         lastMapNode = to;
+//        System.out.println("Sumber = " + "X = " + to.getLocation().getX() + "   Y = "
+//                + to.getLocation().getY() + " Distance = " + dis);
         return p;
 
         //        stopPath.add(new MapNode(new Coord(13464.68340406493, 4529.4286311043525)));// berhenti di Bandara Adisucipto

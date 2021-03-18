@@ -108,6 +108,8 @@ public interface RoutingDecisionEngine
 	 * @return true if the message should be deleted. False otherwise.
 	 */
 	public boolean shouldDeleteOldMessage(Message m, DTNHost hostReportingOld);
+        
+ //       public void hitungJarakEuclidan(DTNHost thisHost);
 	
 	/**
 	 * Duplicates this decision engine.

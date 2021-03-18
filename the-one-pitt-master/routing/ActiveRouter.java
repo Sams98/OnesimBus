@@ -198,7 +198,7 @@ public abstract class ActiveRouter extends MessageRouter {
                 this.deleteMessage(m.getId(), false);
             }
         }
-
+ //       System.out.println("con = " + con);
         return retVal;
     }
 
