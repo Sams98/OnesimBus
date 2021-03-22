@@ -120,7 +120,9 @@ public class DecisionEngineRouter extends ActiveRouter
 		if(tombstoning)
 			tombstones = new HashSet<String>(10);
 		conStates = new HashMap<Connection, Integer>(4);
-                decider.hitungJarakEuclidan(getHost());
+         
+                
+                
                 
 	}
 

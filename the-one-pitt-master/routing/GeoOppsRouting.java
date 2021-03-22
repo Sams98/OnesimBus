@@ -7,102 +7,124 @@ package routing;
 
 import core.Connection;
 import core.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import movement.map.MapRoute;
+import routing.*;
 
 /**
  *
  * @author Windows_X
  */
 public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
+    
+    List<DTNHost> destination = new LinkedList<>();
+    
+    private final double MAX_NP = 28000;
+    private double nP = 28000;
+    
 
-    List<DTNHost> destinations;
-
-    private double bobot = 28000;
-
-//  destinasi  9647,1620;
-    /**
-     * Stores information about nodes with which this host has come in contact
-     * (koordinat)
-     */
-//    protected Map<DTNHost, Double> recentEncounters;
+    
     public GeoOppsRouting(Settings s) {
-        destinations = getDestination();
+//        this.destination = new LinkedList<>();
     }
-
+    
     public GeoOppsRouting(GeoOppsRouting geo) {
-        destinations = getDestination();
+//        this.destination = new LinkedList<>();
     }
-
+    
     @Override
     public void connectionUp(DTNHost thisHost, DTNHost peer) {
     }
-
+    
     @Override
     public void connectionDown(DTNHost thisHost, DTNHost peer) {
     }
-
+    
     @Override
     public void doExchangeForNewConnection(Connection con, DTNHost peer) {
     }
-
+    
     @Override
     public boolean newMessage(Message m) {
         return true;
     }
-
+    
     @Override
     public boolean isFinalDest(Message m, DTNHost aHost) {
         return m.getTo() == aHost;
     }
-
+    
     @Override
     public boolean shouldSaveReceivedMessage(Message m, DTNHost thisHost) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return true;
     }
-
+    
     @Override
     public boolean shouldSendMessageToHost(Message m, DTNHost otherHost) {
+
+//        if (this.MAX_NP == MAX_NP) {
+//           hitungJarakEuclidan(otherHost);
+//        }
+        if (destination.isEmpty()) {
+//            System.out.println(m);
+//            System.out.println(destination.isEmpty());
+            destination = getDestination();
+        }
+        
+        if (this.nP == MAX_NP) {
+            System.out.println("old " + nP);
+            this.nP = hitungJarakEuclidan(otherHost);
+            System.out.println("new " + this.nP);
+        }
+//        System.out.println(destination);
         GeoOppsRouting de = getOtherDecisionEngine(otherHost);
-        double otherBobot = de.bobot;
-        if (this.bobot < otherBobot) {
+        double otherNp = de.nP;
+        
+        if (this.nP < otherNp) {
             return true;
         } else {
             return false;
         }
+        
     }
-
+    
     private GeoOppsRouting getOtherDecisionEngine(DTNHost h) {
         MessageRouter otherhost = h.getRouter();
+        assert otherhost instanceof DecisionEngineRouter : "This router only works "
+                + " with other routers of same type";
         return (GeoOppsRouting) ((DecisionEngineRouter) otherhost).getDecisionEngine();
     }
-
+    
     @Override
     public boolean shouldDeleteSentMessage(Message m, DTNHost otherHost) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return true;
     }
-
+    
     @Override
     public boolean shouldDeleteOldMessage(Message m, DTNHost hostReportingOld) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return true;
     }
 
     /**
      * method hitungJarakEuclidian digunakan untuk mencari NP
      */
     @Override
-    public void hitungJarakEuclidan(DTNHost thisHost) {
+    public double hitungJarakEuclidan(DTNHost thisHost) {
+        //       System.out.println(thisHost);
+        double hasilEuclidian = 0;
         List<List<Coord>> awal = MapRoute.getRouteCoord(cekRuteIndex(thisHost));
+        //       System.out.println(""+awal);
         for (List<Coord> a : awal) {
             for (Coord b : a) {
-                for (DTNHost c : destinations) {
+                for (DTNHost c : destination) {
                     double jarak = b.distance(c.getLocation());
-                    bobot = (jarak < bobot) ? jarak : bobot;
+                    hasilEuclidian = (jarak < nP) ? jarak : nP;
                 }
             }
         }
-
+        return hasilEuclidian;
     }
 
     /**
@@ -145,11 +167,13 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
         } else {
             return 16;
         }
-
     }
-
+    
     public List<DTNHost> getDestination() {
+//        System.out.println("1");
         List<DTNHost> allNodes = SimScenario.getInstance().getHosts();
+//        System.out.println(""+ SimScenario.getInstance().getHosts());
+//        System.out.println("data" + allNodes);
         List<DTNHost> dest = new LinkedList<>();
         for (DTNHost h : allNodes) {
             if (h.toString().startsWith("d")) {
@@ -158,10 +182,10 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
         }
         return dest;
     }
-
+    
     @Override
     public RoutingDecisionEngineWithCalc replicate() {
         return new GeoOppsRouting(this);
     }
-
+    
 }

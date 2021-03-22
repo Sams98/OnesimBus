@@ -37,7 +37,7 @@ public class MapRoute {
     private int index; // index of the previous returned map node
     private boolean comingBack;
     static int hitung = 0;
-    public static List<List<List<Coord>>> rutePerKoordinat;
+    public static List<List<List<Coord>>> rutePerKoordinat = new ArrayList<List<List<Coord>>>();
 
     /**
      * Creates a new map route
@@ -51,9 +51,7 @@ public class MapRoute {
         this.type = type;
         this.stops = stops;
         this.index = 0;
-        this.comingBack = false;
-        this.rutePerKoordinat = new ArrayList<List<List<Coord>>>();
-
+        this.comingBack = false;        
     }
 
     /**
@@ -185,12 +183,14 @@ public class MapRoute {
 
         }
         rutePerKoordinat.add(coords);
-        System.out.println("" + coords);
+//        System.out.println("" + rutePerKoordinat.size());
         return routes;
     }
     
     public static List<List<Coord>> getRouteCoord(int index){
+//        System.out.println(""+index);
         return rutePerKoordinat.get(index);
+        
     }
 
 }

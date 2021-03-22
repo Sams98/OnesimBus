@@ -172,7 +172,7 @@ public class MapRouteMovementWithStop extends MapBasedMovement implements
     public Path getPath() {
         Path p = new Path(generateSpeed());
         MapNode to = route.nextStop();
-        double dis = this.route.nextStop().getLocation().distance(new Coord(9647, 1620));
+       // double dis = this.route.nextStop().getLocation().distance(new Coord(9647, 1620));
 
         for (MapNode stopPath1 : stopPath) {
             if (to.getLocation().equals(stopPath1.getLocation())) {

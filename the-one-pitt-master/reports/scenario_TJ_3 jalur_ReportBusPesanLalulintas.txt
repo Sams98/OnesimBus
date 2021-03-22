@@ -1,10 +1,10 @@
 Pesan L
-nrofCreated = 0
-nrofDropped = 0
-nrofRemoved = 0
-nrofStarted = 0
-nrofAborted = 0
-nrofRelayed = 0
+nrofCreated = 8968
+nrofDropped = 7563
+nrofRemoved = 15122
+nrofStarted = 15209
+nrofAborted = 87
+nrofRelayed = 15122
 ndelivered = 0
 deliveryProb = 0.0000
 OverheadRatio = NaN
