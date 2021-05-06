@@ -56,7 +56,7 @@ public class Coord implements Cloneable, Comparable<Coord> {
 	 * @param other The other coordinate
 	 * @return The distance between this and another coordinate
 	 */
-	public double distance(Coord other) {
+	 public double distance(Coord other) {
 		double dx = this.x - other.x;
 		double dy = this.y - other.y;
 //		          System.out.println("This x = "+ this.x + "    This y = = " + this.y

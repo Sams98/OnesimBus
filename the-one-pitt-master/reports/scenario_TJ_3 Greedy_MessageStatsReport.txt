@@ -1,0 +1,20 @@
+Message stats for scenario scenario_TJ_3 Greedy
+sim_time: 43200.1000
+created: 246
+started: 189
+relayed: 110
+aborted: 79
+dropped: 85
+removed: 110
+delivered: 52
+delivery_prob: 0.2114
+response_prob: 0.0000
+overhead_ratio: 1.1154
+latency_avg: 3345.8462
+latency_med: 3217.0000
+hopcount_avg: 2.0000
+hopcount_med: 2
+buffertime_avg: 1552.8426
+buffertime_med: 345.2000
+rtt_avg: NaN
+rtt_med: NaN

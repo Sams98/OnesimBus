@@ -317,7 +317,7 @@ public abstract class MessageRouter {
 		
 		
 		if (incoming == null) {
-			throw new SimError("No message with ID " + id + " in the incoming "+
+			throw new SimError("No message with ID " + id + "in the incoming "+
 					"buffer of " + this.host);
 		}
 		

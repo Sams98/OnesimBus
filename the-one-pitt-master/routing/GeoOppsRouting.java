@@ -24,16 +24,17 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
     private final double MAX_NP = 28000;
     private double nP = 28000;
 
-    public GeoOppsRouting(Settings s) {
-//        this.destination = new LinkedList<>();
-    }
+    public GeoOppsRouting(Settings s) {}
 
-    public GeoOppsRouting(GeoOppsRouting geo) {
-//        this.destination = new LinkedList<>();
+    public GeoOppsRouting(GeoOppsRouting geo) {}
+
+    public double getnP() {
+        return nP;
     }
 
     @Override
     public void connectionUp(DTNHost thisHost, DTNHost peer) {
+
     }
 
     @Override
@@ -42,6 +43,18 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
 
     @Override
     public void doExchangeForNewConnection(Connection con, DTNHost peer) {
+        DTNHost myHost = con.getOtherNode(peer);
+        if (destination.isEmpty()) {
+//            System.out.println(m);
+//            System.out.println(destination.isEmpty());
+            destination = getDestination();
+        }
+
+        if (nP == MAX_NP) {
+//            System.out.println("old " + nP);
+            nP = hitungJarakEuclidan(myHost);
+//            System.out.println("new " + nP);
+        }
     }
 
     @Override
@@ -56,51 +69,45 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
 
     @Override
     public boolean shouldSaveReceivedMessage(Message m, DTNHost thisHost) {
-        return true;
+        //PESAN DIMASUKAN KE BUFFER GAK?
+
+        return m.getTo() != thisHost;
     }
 
     @Override
-    public boolean shouldSendMessageToHost(Message m, DTNHost otherHost) {
-        List< DTNHost> thisHost = SimScenario.getInstance().getHosts();
+    public boolean shouldSendMessageToHost(Message m, DTNHost thisHost, DTNHost otherHost) {
+//        DTNHost dest = m.getTo();
 
-//        if (this.MAX_NP == MAX_NP) {
-//           hitungJarakEuclidan(otherHost);
-//        }
-
-            if (destination.isEmpty()) {
-//            System.out.println(m);
-//            System.out.println(destination.isEmpty());
-                destination = getDestination();
-            }
-
-            if (this.nP == MAX_NP) {
-                System.out.println("old " + nP);
-                this.nP = hitungJarakEuclidan(otherHost);
-                System.out.println("new " + this.nP);
-            }
-        
 //        System.out.println(destination);
-        GeoOppsRouting de = getOtherDecisionEngine(otherHost);
-        double otherNp = de.nP;
-
-        if (this.nP < otherNp) {
+        if (m.getTo() == otherHost) {
             return true;
-        } else {
+        }
+        if (otherHost.toString().startsWith("s") || otherHost.toString().startsWith("t")) {
             return false;
         }
 
+        GeoOppsRouting de = this.getOtherDecisionEngine(otherHost);
+
+        if (this.getnP() <= de.getnP()) {
+ //         System.out.println("thisNp = " + this.getnP() + " " + thisHost + " de = " + de.getnP() + " " + otherHost);
+//            System.out.println("thisNP = " + this.nP + " deNp = " + de.nP);
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private GeoOppsRouting getOtherDecisionEngine(DTNHost h) {
-        MessageRouter otherhost = h.getRouter();
-        assert otherhost instanceof DecisionEngineRouter : "This router only works "
+        MessageRouter otherHost = h.getRouter();
+        assert otherHost instanceof DecisionEngineRouter : "This router only works "
                 + " with other routers of same type";
-        return (GeoOppsRouting) ((DecisionEngineRouter) otherhost).getDecisionEngine();
+        return (GeoOppsRouting) ((DecisionEngineRouter) otherHost).getDecisionEngine();
     }
 
     @Override
     public boolean shouldDeleteSentMessage(Message m, DTNHost otherHost) {
         return true;
+
     }
 
     @Override
@@ -117,24 +124,34 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
         double hasilEuclidian = 0;
         List<List<Coord>> awal = MapRoute.getRouteCoord(cekRuteIndex(thisHost));
         //       System.out.println(""+awal);
+        /*agar sensor dan terminal tidak hitung np */
         if (!thisHost.toString().startsWith("s") && !thisHost.toString().startsWith("t")) {
             for (List<Coord> a : awal) {
                 for (Coord b : a) {
                     for (DTNHost c : destination) {
                         double jarak = b.distance(c.getLocation());
-                        hasilEuclidian = (jarak < nP) ? jarak : nP;
+//                              System.out.println("jarak = " + jarak + " " + thisHost);
+                        nP = (jarak < nP) ? jarak : nP;
                     }
+                    hasilEuclidian = nP;
+//                    System.out.println("" + hasilEuclidian + " " + thisHost);
                 }
             }
         }
-        if (thisHost.toString().startsWith("s") && thisHost.toString().startsWith("t")) {
-        System.out.println("");
-        } else {
-            System.out.println("This Host = " + thisHost );
+        if (thisHost.toString().startsWith("s") || thisHost.toString().startsWith("t")) {
+            for (DTNHost c : destination) {
+                return MAX_NP;
+
+            }
         }
+//        if (thisHost.toString().startsWith("s") && thisHost.toString().startsWith("t")) {
+//            System.out.println("");
+//        } else {
+//            System.out.println("This Host = " + thisHost);
+//        }
         return hasilEuclidian;
     }
-    
+
     /**
      * cekRuteIndex untuk mengetahui host tersebut berada di jalur mana
      */
@@ -177,6 +194,7 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
         }
     }
 
+    /*untuk mencari destinasi */
     public List<DTNHost> getDestination() {
 //        System.out.println("1");
         List<DTNHost> allNodes = SimScenario.getInstance().getHosts();

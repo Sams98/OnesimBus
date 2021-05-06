@@ -27,7 +27,7 @@ public class MessageGetHop extends Report implements MessageListener {
         String str = m.getFrom().toString();
 
         for (int i = 1; i < hops.size(); i++) {
-            str += "->" + hops.get(i);
+            str += "->" + hops.get(i) + " (" + m.getId()+") ";
         }
 
         return str;

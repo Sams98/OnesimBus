@@ -37,7 +37,8 @@ public class MapRoute {
     private int index; // index of the previous returned map node
     private boolean comingBack;
     static int hitung = 0;
-    public static List<List<List<Coord>>> rutePerKoordinat = new ArrayList<List<List<Coord>>>();
+    /**rutePerKoordinat untuk menampung coordinat tiap jalur */
+    public static List<List<List<Coord>>> rutePerKoordinat = new ArrayList<List<List<Coord>>>(); 
 
     /**
      * Creates a new map route
@@ -182,11 +183,14 @@ public class MapRoute {
             routes.add(new MapRoute(type, nodes));
 
         }
+        /*memasukan coord ke dalam ruteperkoordinat */
         rutePerKoordinat.add(coords);
+//        System.out.println("rute = " + routeFile + " " + rutePerKoordinat);
 //        System.out.println("" + rutePerKoordinat.size());
         return routes;
     }
     
+    /* untuk mendapatkan index dari masing-masing jalur*/
     public static List<List<Coord>> getRouteCoord(int index){
 //        System.out.println(""+index);
         return rutePerKoordinat.get(index);

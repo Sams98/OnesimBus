@@ -6,6 +6,7 @@
 package routing;
 
 import core.*;
+import java.util.HashMap;
 
 /**
  *
@@ -88,7 +89,7 @@ public interface RoutingDecisionEngineWithCalc {
 	 * @param otherHost peer to potentially send the message to.
 	 * @return true if the message should be sent. False otherwise.
 	 */
-	public boolean shouldSendMessageToHost(Message m,  DTNHost otherHost);
+	public boolean shouldSendMessageToHost(Message m,DTNHost thisHost, DTNHost otherHost);
 	
 	/**
 	 * Called after a message is sent to some other peer to ask if it should now
