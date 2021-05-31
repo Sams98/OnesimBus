@@ -84,6 +84,7 @@ public class PointsOfInterest {
 				// get the lucky POI group
 				List<MapNode> pois = poiLists.get(t.getValue());
 				// return a random POI from that group
+//                                System.out.println("pois =" + pois.size());
 				return pois.get(rng.nextInt(pois.size()));
 			}
 		}

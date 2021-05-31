@@ -4,6 +4,7 @@
  */
 package report;
 
+import core.Connection;
 import core.ConnectionListener;
 import core.DTNHost;
 
@@ -28,7 +29,8 @@ public class ConnectivityDtnsim2Report extends Report
 		}
 		
 		newEvent();
-		write(createTimeStamp() + " " + connectionString(h1, h2) + " up");
+		//write(createTimeStamp() + " " + connectionString(h1, h2) + " up");
+		write(connectionString(h1, h2) + " up");
 	}
 	
 	public void hostsDisconnected(DTNHost h1, DTNHost h2) {
@@ -40,7 +42,7 @@ public class ConnectivityDtnsim2Report extends Report
 		} 
 		
 		newEvent();
-		write(createTimeStamp() + " " + conString + " down");
+		//write(createTimeStamp() + " " + conString + " down");
 	}
 	
 	/**
@@ -60,7 +62,7 @@ public class ConnectivityDtnsim2Report extends Report
 	 * @return String presentation of the connection
 	 */
 	private String connectionString(DTNHost h1, DTNHost h2) {
-		if (h1.getAddress() < h2.getAddress()) {
+         	if (h1.getAddress() < h2.getAddress()) {
 			return h1 + " <-> " + h2;
 		}
 		else {

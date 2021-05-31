@@ -14,9 +14,7 @@ import java.util.List;
  * @author Windows_X
  */
 public class GreedyRouting implements RoutingDecisionEngineWithCalc {
-    List<DTNHost> destination = new LinkedList<>();
-    private int direct ;
-    
+
     public GreedyRouting(Settings s) {
     }
 
@@ -48,47 +46,64 @@ public class GreedyRouting implements RoutingDecisionEngineWithCalc {
     @Override
     public boolean shouldSaveReceivedMessage(Message m, DTNHost thisHost) {
         //PESAN DIMASUKAN KE BUFFER GAK?
-        
+
         return m.getTo() != thisHost;
     }
 
     @Override
     public boolean shouldSendMessageToHost(Message m, DTNHost thisHost, DTNHost otherHost) {
-        //        DTNHost dest = m.getTo();
+        //mengambil jalur dari pesan
+        List<String> jalur = (List) m.getProperty("jalur");
+//        System.out.println("thisHos = " + thisHost + "pesan dari = " + m.getFrom() + " jalur = "  + jalur + "   other = " + otherHost);
+//System.out.println(otherHost.toString().equals(jalur.get(0)));
 
-//        System.out.println(destination);
-//
+//        System.out.println("Other = " + otherHost + " " + "Jalur = " + jalur.get(0) + " sensor = " + m.getFrom());
         if (m.getTo() == otherHost) {
             return true;
-        } 
+        }
 
-        //kalo ketemu sensor atau terminal ga usah kirim
-        if (otherHost.toString().startsWith("s") || otherHost.toString().startsWith("t")) {
+//        if (thisHost.toString().startsWith("s8")){
+//            if(otherHost.toString().startsWith("8")){
+//                return true;
+//            }
+//        } else if (thisHost.toString().startsWith("s9")){
+//            if (otherHost.toString().startsWith("10")){
+//                return true;
+//            }
+//        } else if (thisHost.toString().startsWith("s10")){
+//            if (otherHost.toString().startsWith("6A")){
+//                return true;
+//            }
+//                
+//        }
+//        System.out.println(jalur.get(0));
+//        if (m.getFrom().toString().startsWith("s8") && otherHost.toString().startsWith("8")){
+//            return true;
+//        } else if (m.getFrom().toString().startsWith("s9") && otherHost.toString().startsWith("10")){
+//            return true;
+//        }
+//        System.out.println(otherHost + jalur.get(0));
+        //jika jalur kosong berarti pesan sudah sampai di rute terakhir, tinggal tunggu ketemu tujuan
+        if (jalur.isEmpty()) {
+//            System.out.println("salah");
             return false;
-        }
-        
-        int a = cekRuteIndex(thisHost);
-        int b = cekRuteIndex(otherHost);
-        //System.out.println("b = " + b);
-
-        if (b < a) {
-            System.out.println("b = " + b + " " + otherHost + " ( " + m.getId() + " ) " + " a =  " + a + " " + thisHost);
-            return true;
-        }
-//        } //        if (b == 0 && !otherHost.toString().startsWith("s") 
-        //                && !otherHost.toString().startsWith("t")){
-        //            return true;
-        //        }else if(a == 0){
-        //            return false;
-        //        }
-        //        if(!otherHost.toString().startsWith("s") || !otherHost.toString().startsWith("t")) {
-        //            return true;
-        //        
-        //        } else if (b < a) {
-        //            System.out.println("b = " + b + otherHost + " a = " + a + thisHost);
-        //            return true;
+        } //jika jalur masih ada yang lainnya
         else {
-            return false;
+//            System.out.println("else");
+            //jika node yang ditemui merupakan node yg tertulis di jalur yang harus dilewati berikutnya
+//            if (otherHost.toString().equals(jalur.get(0))) {
+            if (jalur.get(0).contains(otherHost.toString().substring(0, 2))) {
+                //hapus node dari jalur
+                jalur.remove(0);
+                //update jalur ke pesan
+                m.updateProperty("jalur", jalur);
+//                System.out.println("jalur");
+                //kirim pesan
+                return true;
+            } else {
+                //jika node yang ditemui berbeda dgn yang tercatat dijalur pesan, tidak kirim
+                return false;
+            }
         }
     }
 
@@ -96,31 +111,12 @@ public class GreedyRouting implements RoutingDecisionEngineWithCalc {
     public boolean shouldDeleteSentMessage(Message m, DTNHost otherHost) {
         return true;
     }
-//        if (getOtherDecisionEngine(otherHost).toString().startsWith("s")) {
-//            System.out.println(otherHost);
-//            return true;
-//        } if (getOtherDecisionEngine(otherHost).toString().startsWith("t")) {
-//            System.out.println(otherHost + " t");
-//            return false;
-//        }
-//        return false;
-//    }
 
     private GreedyRouting getOtherDecisionEngine(DTNHost h) {
         MessageRouter otherHost = h.getRouter();
         assert otherHost instanceof DecisionEngineRouter : "This router only works "
                 + " with other routers of same type";
         return (GreedyRouting) ((DecisionEngineRouter) otherHost).getDecisionEngine();
-    }
-
-    public int cekRuteIndex(DTNHost host) {
-        String name = host.toString();
-        if (name.startsWith("3A") || name.startsWith("3B") || name.startsWith("5A")
-                || name.startsWith("5B")) {
-            return 0;
-        } else {
-            return 1;
-        }
     }
 
     @Override

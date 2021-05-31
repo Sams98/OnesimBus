@@ -149,6 +149,8 @@ public class DecisionEngineRouter extends ActiveRouter {
             //revised by Matthew
             m.setTtl(this.msgTtl);
 
+            m.addProperty("jalur", getJalurM(getHost()));
+
             addToMessages(m, true);
 
             findConnectionsForNewMessage(m, getHost());
@@ -392,5 +394,150 @@ public class DecisionEngineRouter extends ActiveRouter {
                 outgoingMessages.add(new Tuple<Message, Connection>(m, c));
             }
         }
+    }
+
+    public List<String> getJalurM(DTNHost host) {
+        String hostname = host.toString();
+//        System.out.println(hostname);
+        List<String> jalur = new ArrayList<String>();
+        
+
+        //memilih jalur berdasarkan host (sensor) mana yang buat
+        switch (hostname) {
+            case "s8":
+                jalur.add("8");
+                jalur.add("3A");
+                break;
+            case "s9":
+                jalur.add("10");
+                jalur.add("3A");
+                break;
+            case "s10":
+                jalur.add("6A");
+                jalur.add("3A");
+                break;
+            case "s11":
+                jalur.add("11");
+                jalur.add("3B");
+                break;
+            case "s12":
+                jalur.add("3A");
+                break;
+            case "s13":
+                jalur.add("3A");
+                break;
+            case "s14":
+                jalur.add("2A");
+                jalur.add("3A");
+                break;
+            case "s15":
+                jalur.add("3A");
+                break;
+            case "s16":
+                jalur.add("3A");
+                break;
+            case "s17":
+                jalur.add("2A");
+                jalur.add("3A");
+                break;
+            case "s18":
+                jalur.add("3A");
+                break;
+            case "s19":
+                jalur.add("7");
+                jalur.add("3A");
+                break;
+            case "s20":
+                jalur.add("3A");
+                break;
+            case "s21":
+                jalur.add("2A");
+                jalur.add("3A");
+                break;
+            case "s22":
+                jalur.add("3A");
+                break;
+            case "s23":
+                jalur.add("3A");
+                break;
+            case "s24":
+                jalur.add("5A");
+                break;
+            case "s25":
+                jalur.add("5A");
+                break;
+            case "s26":
+                jalur.add("5A");
+                break;
+            case "s27":
+                jalur.add("3A");
+                break;
+            case "s28":
+                jalur.add("3A");
+                break;
+            case "s29":
+                jalur.add("3A");
+                break;
+            case "s30":
+                jalur.add("3A");
+                break;
+            case "s31":
+                jalur.add("3A");
+                break;
+            case "s32":
+                jalur.add("1A");
+                jalur.add("3A");
+                break;
+            case "s33":
+                jalur.add("11");
+                jalur.add("3B");
+                break;
+            case "s34":
+                jalur.add("3A");
+                break;
+            case "s35":
+                jalur.add("5A");
+                break;
+            case "s36":
+                jalur.add("5A");
+                break;
+            case "s37":
+                jalur.add("2A");
+                jalur.add("3A");
+                break;
+            case "s38":
+                jalur.add("3A");
+                break;
+            case "s39":
+                jalur.add("10");
+                jalur.add("3A");
+                break;
+            case "s40":
+                jalur.add("10");
+                jalur.add("3A");
+                break;
+            case "s41":
+                jalur.add("5A");
+                break;
+            case "s42":
+                jalur.add("3A");
+                break;
+            case "s43":
+                jalur.add("8");
+                jalur.add("3A");
+                break;
+            case "s44":
+                jalur.add("1A");
+                jalur.add("3A");
+                break;
+            case "s45":
+                jalur.add("11");
+                jalur.add("3B");
+                break;
+
+            default:
+                break;
+        }
+        return jalur;
     }
 }
