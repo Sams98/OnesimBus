@@ -400,7 +400,6 @@ public class DecisionEngineRouter extends ActiveRouter {
         String hostname = host.toString();
 //        System.out.println(hostname);
         List<String> jalur = new ArrayList<String>();
-        
 
         //memilih jalur berdasarkan host (sensor) mana yang buat
         switch (hostname) {

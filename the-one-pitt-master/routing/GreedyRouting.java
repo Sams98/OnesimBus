@@ -61,28 +61,8 @@ public class GreedyRouting implements RoutingDecisionEngineWithCalc {
         if (m.getTo() == otherHost) {
             return true;
         }
-
-//        if (thisHost.toString().startsWith("s8")){
-//            if(otherHost.toString().startsWith("8")){
-//                return true;
-//            }
-//        } else if (thisHost.toString().startsWith("s9")){
-//            if (otherHost.toString().startsWith("10")){
-//                return true;
-//            }
-//        } else if (thisHost.toString().startsWith("s10")){
-//            if (otherHost.toString().startsWith("6A")){
-//                return true;
-//            }
-//                
-//        }
-//        System.out.println(jalur.get(0));
-//        if (m.getFrom().toString().startsWith("s8") && otherHost.toString().startsWith("8")){
-//            return true;
-//        } else if (m.getFrom().toString().startsWith("s9") && otherHost.toString().startsWith("10")){
-//            return true;
-//        }
 //        System.out.println(otherHost + jalur.get(0));
+
         //jika jalur kosong berarti pesan sudah sampai di rute terakhir, tinggal tunggu ketemu tujuan
         if (jalur.isEmpty()) {
 //            System.out.println("salah");

@@ -1,0 +1,20 @@
+Message stats for scenario scenario_TJ_3 SprayAndWait
+sim_time: 43200.1000
+created: 246
+started: 6946
+relayed: 6803
+aborted: 143
+dropped: 2182
+removed: 0
+delivered: 122
+delivery_prob: 0.4959
+response_prob: 0.0000
+overhead_ratio: 54.7623
+latency_avg: 2943.0451
+latency_med: 3127.1000
+hopcount_avg: 4.2787
+hopcount_med: 4
+buffertime_avg: 23530.4278
+buffertime_med: 24143.1000
+rtt_avg: NaN
+rtt_med: NaN

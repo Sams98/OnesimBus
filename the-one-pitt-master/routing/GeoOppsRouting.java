@@ -24,9 +24,11 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
     private final double MAX_NP = 28000;
     private double nP = 28000;
 
-    public GeoOppsRouting(Settings s) {}
+    public GeoOppsRouting(Settings s) {
+    }
 
-    public GeoOppsRouting(GeoOppsRouting geo) {}
+    public GeoOppsRouting(GeoOppsRouting geo) {
+    }
 
     public double getnP() {
         return nP;
@@ -82,18 +84,31 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
         if (m.getTo() == otherHost) {
             return true;
         }
-        if (otherHost.toString().startsWith("s") || otherHost.toString().startsWith("t")) {
-            return false;
-        }
 
         GeoOppsRouting de = this.getOtherDecisionEngine(otherHost);
 
-        if (this.getnP() <= de.getnP()) {
- //         System.out.println("thisNp = " + this.getnP() + " " + thisHost + " de = " + de.getnP() + " " + otherHost);
-//            System.out.println("thisNP = " + this.nP + " deNp = " + de.nP);
+//        if (m.getFrom().toString().startsWith("s")){
+//            return true;
+//        } else {
+//            if(otherHost.toString().startsWith("s") || otherHost.toString().startsWith("t")){
+//                return false;
+//            } else {
+//                if(this.getnP() < de.getnP()){
+//                return false;
+//            } else {
+//                    return true;
+//                }
+//        }
+        if (otherHost.toString().startsWith("s") || otherHost.toString().startsWith("t")) {
             return false;
         } else {
-            return true;
+            if (this.getnP() <= de.getnP()) {
+//                System.out.println("thisNp = " + this.getnP() + " " + thisHost + " de = " + de.getnP() + " " + otherHost);
+//            System.out.println("thisNP = " + this.nP + " deNp = " + de.nP);
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 
@@ -141,7 +156,6 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
         if (thisHost.toString().startsWith("s") || thisHost.toString().startsWith("t")) {
             for (DTNHost c : destination) {
                 return MAX_NP;
-
             }
         }
 //        if (thisHost.toString().startsWith("s") && thisHost.toString().startsWith("t")) {
