@@ -149,6 +149,7 @@ public class DecisionEngineRouter extends ActiveRouter {
             //revised by Matthew
             m.setTtl(this.msgTtl);
 
+            //untuk menambahkan property pesan lewat kemana
             m.addProperty("jalur", getJalurM(getHost()));
 
             addToMessages(m, true);

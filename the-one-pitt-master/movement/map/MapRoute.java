@@ -176,9 +176,9 @@ public class MapRoute {
                             + orig);
                 }
                 nodes.add(node);
-
+                
             }
-
+//System.out.println(nodes);
 //            System.out.println(hitung++);
             routes.add(new MapRoute(type, nodes));
 

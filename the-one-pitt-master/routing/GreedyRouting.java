@@ -104,10 +104,6 @@ public class GreedyRouting implements RoutingDecisionEngineWithCalc {
         return true;
     }
 
-    @Override
-    public double hitungJarakEuclidan(DTNHost thisHost) {
-        return 0;
-    }
 
     @Override
     public RoutingDecisionEngineWithCalc replicate() {

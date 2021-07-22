@@ -133,7 +133,7 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
     /**
      * method hitungJarakEuclidian digunakan untuk mencari NP
      */
-    @Override
+
     public double hitungJarakEuclidan(DTNHost thisHost) {
         //       System.out.println(thisHost);
         double hasilEuclidian = 0;
@@ -149,7 +149,7 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
                         nP = (jarak < nP) ? jarak : nP;
                     }
                     hasilEuclidian = nP;
-//                    System.out.println("" + hasilEuclidian + " " + thisHost);
+                    System.out.println("" + hasilEuclidian + " " + thisHost);
                 }
             }
         }

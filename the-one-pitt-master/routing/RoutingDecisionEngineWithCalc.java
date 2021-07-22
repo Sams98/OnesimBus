@@ -112,8 +112,7 @@ public interface RoutingDecisionEngineWithCalc {
 	 */
 	public boolean shouldDeleteOldMessage(Message m, DTNHost hostReportingOld);
         
-        public double hitungJarakEuclidan(DTNHost thisHost);
-        
+   
 	
 	/**
 	 * Duplicates this decision engine.
