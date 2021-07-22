@@ -104,7 +104,6 @@ public class GreedyRouting implements RoutingDecisionEngineWithCalc {
         return true;
     }
 
-
     @Override
     public RoutingDecisionEngineWithCalc replicate() {
         return new GreedyRouting(this);

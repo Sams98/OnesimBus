@@ -87,18 +87,6 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
 
         GeoOppsRouting de = this.getOtherDecisionEngine(otherHost);
 
-//        if (m.getFrom().toString().startsWith("s")){
-//            return true;
-//        } else {
-//            if(otherHost.toString().startsWith("s") || otherHost.toString().startsWith("t")){
-//                return false;
-//            } else {
-//                if(this.getnP() < de.getnP()){
-//                return false;
-//            } else {
-//                    return true;
-//                }
-//        }
         if (otherHost.toString().startsWith("s") || otherHost.toString().startsWith("t")) {
             return false;
         } else {
@@ -133,7 +121,6 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
     /**
      * method hitungJarakEuclidian digunakan untuk mencari NP
      */
-
     public double hitungJarakEuclidan(DTNHost thisHost) {
         //       System.out.println(thisHost);
         double hasilEuclidian = 0;
