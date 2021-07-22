@@ -27,7 +27,7 @@ public class FrekuensiContactHistoryReport extends Report {
             if (!(r instanceof DecisionEngineRouter)) {
                 continue;
             }
-            RoutingDecisionEngine de = ((DecisionEngineRouter) r).getDecisionEngine();
+            RoutingDecisionEngine de = (RoutingDecisionEngine) ((DecisionEngineRouter) r).getDecisionEngine();
             if (!(de instanceof FrekuensiConnectionHistoryEngine)) {
                 continue;
             }

@@ -40,7 +40,7 @@ public class CommunityDetectionReport extends Report
 			MessageRouter r = h.getRouter();
 			if(!(r instanceof DecisionEngineRouter) )
 				continue;
-			RoutingDecisionEngine de = ((DecisionEngineRouter)r).getDecisionEngine();
+			RoutingDecisionEngine de = (RoutingDecisionEngine) ((DecisionEngineRouter)r).getDecisionEngine();
 			if(!(de instanceof CommunityDetectionEngine))
 				continue;
 			CommunityDetectionEngine cd = (CommunityDetectionEngine)de;
