@@ -21,8 +21,8 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
 
     List<DTNHost> destination = new LinkedList<>();
 
-    private final double MAX_NP = 28000;
-    private double nP = 28000;
+    private final double MAX_NP = Double.POSITIVE_INFINITY;   
+    private double nP = Double.POSITIVE_INFINITY; //nilai nearest point awal
 
     public GeoOppsRouting(Settings s) {
     }
@@ -45,9 +45,8 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
 
     @Override
     public void doExchangeForNewConnection(Connection con, DTNHost peer) {
-        DTNHost myHost = con.getOtherNode(peer);
+        DTNHost myHost = con.getOtherNode(peer);  //peer node yg ditemui (con.gerothernode itu orang lainnya
         if (destination.isEmpty()) {
-//            System.out.println(m);
 //            System.out.println(destination.isEmpty());
             destination = getDestination();
         }
@@ -78,21 +77,16 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
 
     @Override
     public boolean shouldSendMessageToHost(Message m, DTNHost thisHost, DTNHost otherHost) {
-//        DTNHost dest = m.getTo();
-
-//        System.out.println(destination);
         if (m.getTo() == otherHost) {
             return true;
         }
 
         GeoOppsRouting de = this.getOtherDecisionEngine(otherHost);
 
-        if (otherHost.toString().startsWith("s") || otherHost.toString().startsWith("t")) {
+        if (otherHost.toString().startsWith("s") || otherHost.toString().startsWith("t")) { 
             return false;
         } else {
-            if (this.getnP() <= de.getnP()) {
-//                System.out.println("thisNp = " + this.getnP() + " " + thisHost + " de = " + de.getnP() + " " + otherHost);
-//            System.out.println("thisNP = " + this.nP + " deNp = " + de.nP);
+            if (this.getnP() <= de.getnP()) { //membandingkan nilai np
                 return false;
             } else {
                 return true;
@@ -128,28 +122,21 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
         //       System.out.println(""+awal);
         /*agar sensor dan terminal tidak hitung np */
         if (!thisHost.toString().startsWith("s") && !thisHost.toString().startsWith("t")) {
-            for (List<Coord> a : awal) {
-                for (Coord b : a) {
-                    for (DTNHost c : destination) {
+            for (List<Coord> a : awal) { // mengambil list coord dari variabel awal
+                for (Coord b : a) { // mengambil coord dari list<coord> didalam awal
+                    for (DTNHost c : destination) { 
                         double jarak = b.distance(c.getLocation());
 //                              System.out.println("jarak = " + jarak + " " + thisHost);
                         nP = (jarak < nP) ? jarak : nP;
                     }
                     hasilEuclidian = nP;
-                    System.out.println("" + hasilEuclidian + " " + thisHost);
                 }
             }
         }
         if (thisHost.toString().startsWith("s") || thisHost.toString().startsWith("t")) {
-            for (DTNHost c : destination) {
-                return MAX_NP;
-            }
+//            System.out.println("MAX NP");
+            return MAX_NP;
         }
-//        if (thisHost.toString().startsWith("s") && thisHost.toString().startsWith("t")) {
-//            System.out.println("");
-//        } else {
-//            System.out.println("This Host = " + thisHost);
-//        }
         return hasilEuclidian;
     }
 
@@ -158,6 +145,7 @@ public class GeoOppsRouting implements RoutingDecisionEngineWithCalc {
      */
     public int cekRuteIndex(DTNHost host) {
         String name = host.toString();
+        
         if (name.startsWith("1A")) {
             return 0;
         } else if (name.startsWith("1B")) {
